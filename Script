@@ -6,8 +6,8 @@ function main() {
   const spreadsheetUrl = 'SPREADSHEETURL'; //Vul hier de link van de spreadsheet in
   const sheetName = 'SHEETNAME'; // Vul hier de naam van het tablad in
   const emailAdress = 'EMAILADRES'; // Vul hier jouw e-mailadres in
-  const jaar = '2023'; // Vul hier het jaar in
-  const jaarBudget = BUDGET; // Vul hier het jaarbudget in
+  const jaar = '2023'; // Vul hier het jaar in (standaard 2023)
+  const jaarBudget = JAARBUDGET; // Vul hier het jaarbudget in
   
 
   
@@ -168,80 +168,81 @@ function main() {
   }
     
   //------------------------------------------------------------ resterend dagbudget
- 
+   //Berekening op basis van kosten linear = kostenlinear - kostenvandaag / dagInteger
+  
+  
   let forecastGemiddeldDagbudget = [];
   
     //Checkt welke maand het is, berekent het budget en stuurt het naar een array
   switch (maandString) {
     case maandString:
       if (maandString == 'Jan') {
-        forecastGemiddeldDagbudget.push(Math.round((maandBudget - kostenjan) / (dagenJan - dagInteger)));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[0] - kostenLinearTwee[0] - kostenVandaag) / (dagenJan - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Feb') {
-        forecastGemiddeldDagbudget.push(Math.round((maandBudget - kostenfeb) / (dagenFeb - dagInteger)));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[1] - kostenLinearTwee[1] - kostenVandaag) / (dagenFeb - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Maa') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenmrt) / (dagenMrt - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[2] - kostenLinearTwee[2] - kostenVandaag) / (dagenMrt - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }      
     case maandString:
       if (maandString == 'Apr') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenapr) / (dagenApr - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[3] - kostenLinearTwee[3] - kostenVandaag) / (dagenApr - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Mei') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenmei) / (dagenMei - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[4] - kostenLinearTwee[4] - kostenVandaag) / (dagenMei - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }      
     case maandString:
       if (maandString == 'Jun') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenjun) / (dagenJun - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[5] - kostenLinearTwee[5] - kostenVandaag) / (dagenJun - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Jul') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenjul) / (dagenJul - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[6] - kostenLinearTwee[6] - kostenVandaag) / (dagenJul - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Aug') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenaug) / (dagenAug - dagInteger));
-      } else {
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[7] - kostenLinearTwee[7] - kostenVandaag) / (dagenAug - dagInteger)));
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Sep') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostensep) / (dagenSep - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[8] - kostenLinearTwee[8] - kostenVandaag) / (dagenSep - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Okt') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenokt) / (dagenOkt - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[9] - kostenLinearTwee[9] - kostenVandaag) / (dagenOkt - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
       if (maandString == 'Nov') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostennov) / (dagenNov - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[10] - kostenLinearTwee[10] - kostenVandaag) / (dagenNov - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
     default:
       if (maandString == 'Dec') {
-        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostendec) / (dagenDec - dagInteger));
+        forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[11] - kostenLinearTwee[11] - kostenVandaag) / (dagenDec - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
       }
@@ -254,73 +255,73 @@ function main() {
   switch (maandString) {
     case maandString:
       if (maandString == 'Jan') {
-        spendPercentage.push(kostenjan / maandBudget);
+        spendPercentage.push((kostenLinearTwee[0] - kostenVandaag) / budgetLinearTwee[0]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Feb') {
-        spendPercentage.push(kostenfeb / maandBudget);
+        spendPercentage.push((kostenLinearTwee[1] - kostenVandaag) / budgetLinearTwee[1]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Maa') {
-        spendPercentage.push(kostenmrt / maandBudget);
+        spendPercentage.push((kostenLinearTwee[2] - kostenVandaag) / budgetLinearTwee[2]);
       } else {
         spendPercentage.push(0);
       }      
     case maandString:
       if (maandString == 'Apr') {
-        spendPercentage.push(kostenapr / maandBudget);
+        spendPercentage.push((kostenLinearTwee[3] - kostenVandaag) / budgetLinearTwee[3]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Mei') {
-        spendPercentage.push(kostenmei / maandBudget);
+        spendPercentage.push((kostenLinearTwee[4] - kostenVandaag) / budgetLinearTwee[4]);
       } else {
         spendPercentage.push(0);
       }      
     case maandString:
       if (maandString == 'Jun') {
-        spendPercentage.push(kostenjun / maandBudget);
+        spendPercentage.push((kostenLinearTwee[5] - kostenVandaag) / budgetLinearTwee[5]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Jul') {
-        spendPercentage.push(kostenjul / maandBudget);
+        spendPercentage.push((kostenLinearTwee[6] - kostenVandaag) / budgetLinearTwee[6]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Aug') {
-        spendPercentage.push(kostenaug / maandBudget);
+        spendPercentage.push((kostenLinearTwee[7] - kostenVandaag) / budgetLinearTwee[7]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Sep') {
-        spendPercentage.push(kostensep / maandBudget);
+        spendPercentage.push((kostenLinearTwee[8] - kostenVandaag) / budgetLinearTwee[8]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Okt') {
-        spendPercentage.push(kostenokt / maandBudget);
+        spendPercentage.push((kostenLinearTwee[9] - kostenVandaag) / budgetLinearTwee[9]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Nov') {
-        spendPercentage.push(kostennov / maandBudget);
+        spendPercentage.push((kostenLinearTwee[10] - kostenVandaag) / budgetLinearTwee[10]);
       } else {
         spendPercentage.push(0);
       }
     default:
       if (maandString == 'Dec') {
-        spendPercentage.push(kostendec / maandBudget);
+        spendPercentage.push((kostenLinearTwee[11] - kostenVandaag) / budgetLinearTwee[11]);
       } else {
         spendPercentage.push(0);
       }
@@ -430,7 +431,7 @@ function main() {
   let totaalGemDagKos = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!F14`).getValues();
   let totaalResBud = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!G14`).getValues();
   let forecastTeHogeDagKosten = Math.round(totaalGemDagKos - totaalResBud);
-  
+    
   // Verstuurd e-mail wanneer de forecast gemiddeld dagbudget hoger is dan het resterende dagbudget  
   const emailSubject = '[Script Alert Budget control and Forecast]';
   const accountNaam = AdsApp.currentAccount().getName();
