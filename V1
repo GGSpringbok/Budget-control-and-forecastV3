@@ -1,0 +1,447 @@
+function main() {
+ 
+  //Budget-control-and-forecastV1
+ 
+  // Connecten met spreadsheet
+  const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/12dAiczg4GGaNIKYZj9osAJX-1e5STUibVYtKO1R74vU/edit#gid=0'; //Vul hier de link van de spreadsheet in
+  const spreadsheet = SpreadsheetApp.openByUrl(spreadsheetUrl);
+  const ss = spreadsheet.getSheetByName('Vattenfall - E-mobility'); // Vul hier de naam van het tablad in
+  
+  const emailAdress = 'gavin.groeneveld@springbokagency.com'; // Vul hier jouw e-mailadres in
+  
+  const jaar = '2023'; // Vul hier het jaar in
+  const jaarBudget = 20000; // Vul hier het jaarbudget in
+  
+  
+  
+    //------ verander niks onder deze lijn ------
+  
+  let sheetarray = [['Budget', 'Kosten', 'Budget (linear)', 'Kosten (linear)', 'Forecast daily spend', 'Resterend dagbudget', '% spend', '% maand']];
+  
+  //Pakt het budget uit B16
+  //let budgetyear = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!B16').getValues();
+  let maandBudget = jaarBudget / 12;
+  let maandBudgetOverzicht = [maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget, maandBudget];
+  let budgetLinear = 0;
+
+  //Pakt het jaartal uit B17
+  // let periodeInteger = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!B17').getValues();
+  let jaartal = jaar.toString(); 
+  
+  // kosten per maand (schrikkeljaar nog niet meegenomen -> 2024 is schrikkeljaar)
+  let kostenjan = AdsApp.currentAccount().getStatsFor(`${jaartal}0101`,`${jaartal}0131`).getCost(); 
+  let kostenfeb = AdsApp.currentAccount().getStatsFor(`${jaartal}0201`,`${jaartal}0228`).getCost(); 
+  let kostenmrt = AdsApp.currentAccount().getStatsFor(`${jaartal}0301`,`${jaartal}0331`).getCost(); 
+  let kostenapr = AdsApp.currentAccount().getStatsFor(`${jaartal}0401`,`${jaartal}0430`).getCost(); 
+  let kostenmei = AdsApp.currentAccount().getStatsFor(`${jaartal}0501`,`${jaartal}0531`).getCost(); 
+  let kostenjun = AdsApp.currentAccount().getStatsFor(`${jaartal}0601`,`${jaartal}0630`).getCost(); 
+  let kostenjul = AdsApp.currentAccount().getStatsFor(`${jaartal}0701`,`${jaartal}0731`).getCost(); 
+  let kostenaug = AdsApp.currentAccount().getStatsFor(`${jaartal}0801`,`${jaartal}0831`).getCost(); 
+  let kostensep = AdsApp.currentAccount().getStatsFor(`${jaartal}0901`,`${jaartal}0930`).getCost(); 
+  let kostenokt = AdsApp.currentAccount().getStatsFor(`${jaartal}1001`,`${jaartal}1031`).getCost(); 
+  let kostennov = AdsApp.currentAccount().getStatsFor(`${jaartal}1101`,`${jaartal}1130`).getCost(); 
+  let kostendec = AdsApp.currentAccount().getStatsFor(`${jaartal}1201`,`${jaartal}1231`).getCost(); 
+  
+  let monthsCost = [kostenjan, kostenfeb, kostenmrt, kostenapr, kostenmei, kostenjun, kostenjul, kostenaug, kostensep, kostenokt, kostennov, kostendec];
+ 
+  let dagenJan = 31;
+  let dagenFeb = 28;
+  let dagenMrt = 31;
+  let dagenApr = 30;  
+  let dagenMei = 31;
+  let dagenJun = 30;
+  let dagenJul = 31;
+  let dagenAug = 31;
+  let dagenSep = 30;
+  let dagenOkt = 31;
+  let dagenNov = 30;
+  let dagenDec = 31;
+  
+  //Berekent het lineare budget
+  let budgetLinearTwee = [];
+  for (var i = 0; i < 12; i++) {
+    for (var j = 0; j <= i; j++) {
+      budgetLinearTwee[i] = (budgetLinearTwee[i] || 0) + maandBudgetOverzicht[j]; 
+    }
+  }
+  
+  let kostenLinear = 0;
+ 
+  //Berekent de lineare kosten
+  let kostenLinearTwee = [];
+  for (var i = 0; i < 12; i++) {
+    for (var j = 0; j <= i; j++) {
+      kostenLinearTwee[i] = (kostenLinearTwee[i] || 0) + monthsCost[j]; 
+    }
+  }
+  
+  //------------------------------------------------------------ forecast gemiddeld dagbudget
+
+  //gisteren ophalen
+  var yesterday = new Date(Date.now() - 86400000);
+  let yesterdayString = yesterday.toString();
+  let maandString = yesterdayString.slice(4, 7);
+  let dagString = yesterdayString.slice(8, 10);
+  let dagInteger = Number(dagString);
+  
+  //Kosten deze maand t/m gister
+  let kostenVandaag = AdsApp.currentAccount().getStatsFor('TODAY').getCost();  
+  let kostenDezeMaand = AdsApp.currentAccount().getStatsFor('THIS_MONTH').getCost();  
+  let kostenDezeMaandTmGister = kostenDezeMaand - kostenVandaag;
+  
+  let forecastGemDagKosten = [];
+  
+  //Checkt welke maand het is en stuurt naar array
+  switch (maandString) {
+    case maandString:
+      if (maandString == 'Jan') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Feb') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Maa') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Apr') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Mei') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Jun') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Jul') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Aug') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Sep') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Okt') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    case maandString:
+      if (maandString == 'Nov') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+    default:
+      if (maandString == 'Dec') {
+        forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
+      } else {
+        forecastGemDagKosten.push(0);
+      }
+  }
+    
+  //------------------------------------------------------------ resterend dagbudget
+ 
+  let forecastGemiddeldDagbudget = [];
+  
+    //Checkt welke maand het is, berekent het budget en stuurt het naar een array
+  switch (maandString) {
+    case maandString:
+      if (maandString == 'Jan') {
+        forecastGemiddeldDagbudget.push(Math.round((maandBudget - kostenjan) / (dagenJan - dagInteger)));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Feb') {
+        forecastGemiddeldDagbudget.push(Math.round((maandBudget - kostenfeb) / (dagenFeb - dagInteger)));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Maa') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenmrt) / (dagenMrt - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Apr') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenapr) / (dagenApr - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Mei') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenmei) / (dagenMei - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Jun') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenjun) / (dagenJun - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Jul') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenjul) / (dagenJul - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Aug') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenaug) / (dagenAug - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Sep') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostensep) / (dagenSep - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Okt') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostenokt) / (dagenOkt - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    case maandString:
+      if (maandString == 'Nov') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostennov) / (dagenNov - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+    default:
+      if (maandString == 'Dec') {
+        forecastGemiddeldDagbudget.push(Math.round(maandBudget - kostendec) / (dagenDec - dagInteger));
+      } else {
+        forecastGemiddeldDagbudget.push(0);
+      }
+  } 
+  
+  //------------------------------------------------------------ % spend
+  
+  let spendPercentage = [];
+  
+  switch (maandString) {
+    case maandString:
+      if (maandString == 'Jan') {
+        spendPercentage.push(kostenjan / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Feb') {
+        spendPercentage.push(kostenfeb / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Maa') {
+        spendPercentage.push(kostenmrt / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Apr') {
+        spendPercentage.push(kostenapr / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Mei') {
+        spendPercentage.push(kostenmei / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Jun') {
+        spendPercentage.push(kostenjun / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Jul') {
+        spendPercentage.push(kostenjul / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Aug') {
+        spendPercentage.push(kostenaug / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Sep') {
+        spendPercentage.push(kostensep / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Okt') {
+        spendPercentage.push(kostenokt / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Nov') {
+        spendPercentage.push(kostennov / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+    default:
+      if (maandString == 'Dec') {
+        spendPercentage.push(kostendec / maandBudget);
+      } else {
+        spendPercentage.push(0);
+      }
+  } 
+
+  //------------------------------------------------------------ % maand
+  
+  let maandPercentage = [];
+  
+  switch (maandString) {
+    case maandString:
+      if (maandString == 'Jan') {
+        maandPercentage.push(dagInteger / dagenJan);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Feb') {
+        maandPercentage.push(dagInteger / dagenFeb);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Maa') {
+        maandPercentage.push(dagInteger / dagenMrt);
+      } else {
+        maandPercentage.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Apr') {
+        maandPercentage.push(dagInteger / dagenApr);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Mei') {
+        maandPercentage.push(dagInteger / dagenMei);
+      } else {
+        maandPercentage.push(0);
+      }      
+    case maandString:
+      if (maandString == 'Jun') {
+        maandPercentage.push(dagInteger / dagenJun);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Jul') {
+        maandPercentage.push(dagInteger / dagenJul);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Aug') {
+        maandPercentage.push(dagInteger / dagenAug);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Sep') {
+        maandPercentage.push(dagInteger / dagenSep);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Okt') {
+        maandPercentage.push(dagInteger / dagenOkt);
+      } else {
+        maandPercentage.push(0);
+      }
+    case maandString:
+      if (maandString == 'Nov') {
+        maandPercentage.push(dagInteger / dagenNov);
+      } else {
+        maandPercentage.push(0);
+      }
+    default:
+      if (maandString == 'Dec') {
+        maandPercentage.push(dagInteger / dagenDec);
+      } else {
+        maandPercentage.push(0);
+      }
+  } 
+
+
+//----------------------------------------------------------------------------------------- Stuurt de data naar een array
+
+  //Stuurt alle waardes naar een array in de sheet
+  for ( var i = 0; i < 12; i++ ) {
+    sheetarray.push([
+      maandBudget,
+      monthsCost[i],
+      budgetLinearTwee[i],
+      kostenLinearTwee[i],
+      forecastGemDagKosten[i],
+      forecastGemiddeldDagbudget[i],
+      spendPercentage[i],
+      maandPercentage[i]]);  
+  }
+
+  Logger.log(sheetarray);
+
+  if (sheetarray.length > 0) {
+  ss.getRange(1, 2, sheetarray.length, sheetarray[0].length).setValues(sheetarray);
+  }
+  
+  let totaalGemDagKos = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!F14').getValues();
+  let totaalResBud = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!G14').getValues();
+  let forecastTeHogeDagKosten = Math.round(totaalResBud - totaalGemDagKos);
+    
+  // Verstuurd e-mail wanneer de forecast gemiddeld dagbudget hoger is dan het resterende dagbudget  
+  const emailSubject = '[Script Alert Budget control and Forecast]';
+  const accountNaam = AdsApp.currentAccount().getName();
+  const emailBody = 
+    "\n"+
+    `Let op, voor het account ${accountNaam} zit je ${forecastTeHogeDagKosten} euro over het resterende dagbudget heen voor deze maand!`;
+  
+  if (totaalGemDagKos > totaalResBud) {
+    MailApp.sendEmail(emailAdress, emailSubject, emailBody);
+    } else {
+      //MailApp.sendEmail(emailAdress, emailSubject, emailBody);
+      Logger.log('Geen e-mail');
+               }
+}
