@@ -429,8 +429,8 @@ function main() {
   
   let totaalGemDagKos = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!F14`).getValues();
   let totaalResBud = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!G14`).getValues();
-  let forecastTeHogeDagKosten = Math.round(totaalResBud - totaalGemDagKos);
-    
+  let forecastTeHogeDagKosten = Math.round(totaalGemDagKos - totaalResBud);
+  
   // Verstuurd e-mail wanneer de forecast gemiddeld dagbudget hoger is dan het resterende dagbudget  
   const emailSubject = '[Script Alert Budget control and Forecast]';
   const accountNaam = AdsApp.currentAccount().getName();
