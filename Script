@@ -3,14 +3,14 @@ function main() {
   //Budget-control-and-forecastV1
  
   // Connecten met spreadsheet
-  const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/12dAiczg4GGaNIKYZj9osAJX-1e5STUibVYtKO1R74vU/edit#gid=0'; //Vul hier de link van de spreadsheet in
+  const spreadsheetUrl = 'SPREADSHEETURL'; //Vul hier de link van de spreadsheet in
   const spreadsheet = SpreadsheetApp.openByUrl(spreadsheetUrl);
-  const ss = spreadsheet.getSheetByName('Vattenfall - E-mobility'); // Vul hier de naam van het tablad in
+  const ss = spreadsheet.getSheetByName('TABLAD NAAM'); // Vul hier de naam van het tablad in
   
-  const emailAdress = 'gavin.groeneveld@springbokagency.com'; // Vul hier jouw e-mailadres in
+  const emailAdress = 'E-MAILADRES'; // Vul hier jouw e-mailadres in
   
   const jaar = '2023'; // Vul hier het jaar in
-  const jaarBudget = 20000; // Vul hier het jaarbudget in
+  const jaarBudget = BUDGET; // Vul hier het jaarbudget in
   
   
   
