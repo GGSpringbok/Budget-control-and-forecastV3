@@ -4,17 +4,17 @@ function main() {
  
   // Connecten met spreadsheet
   const spreadsheetUrl = 'SPREADSHEETURL'; //Vul hier de link van de spreadsheet in
-  const spreadsheet = SpreadsheetApp.openByUrl(spreadsheetUrl);
-  const ss = spreadsheet.getSheetByName('TABLAD NAAM'); // Vul hier de naam van het tablad in
-  
-  const emailAdress = 'E-MAILADRES'; // Vul hier jouw e-mailadres in
-  
+  const sheetName = 'SHEETNAME'; // Vul hier de naam van het tablad in
+  const emailAdress = 'EMAILADRES'; // Vul hier jouw e-mailadres in
   const jaar = '2023'; // Vul hier het jaar in
   const jaarBudget = BUDGET; // Vul hier het jaarbudget in
   
-  
+
   
     //------ verander niks onder deze lijn ------
+  
+  const spreadsheet = SpreadsheetApp.openByUrl(spreadsheetUrl);
+  const ss = spreadsheet.getSheetByName(sheetName);
   
   let sheetarray = [['Budget', 'Kosten', 'Budget (linear)', 'Kosten (linear)', 'Forecast daily spend', 'Resterend dagbudget', '% spend', '% maand']];
   
@@ -427,8 +427,8 @@ function main() {
   ss.getRange(1, 2, sheetarray.length, sheetarray[0].length).setValues(sheetarray);
   }
   
-  let totaalGemDagKos = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!F14').getValues();
-  let totaalResBud = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!G14').getValues();
+  let totaalGemDagKos = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!F14`).getValues();
+  let totaalResBud = spreadsheet.getSheetByName(sheetName).getRange(`${sheetName}!G14`).getValues();
   let forecastTeHogeDagKosten = Math.round(totaalResBud - totaalGemDagKos);
     
   // Verstuurd e-mail wanneer de forecast gemiddeld dagbudget hoger is dan het resterende dagbudget  
