@@ -106,7 +106,7 @@ function main() {
         forecastGemDagKosten.push(0);
       }
     case maandString:
-      if (maandString == 'Maa') {
+      if (maandString == 'Mar') {
         forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
       } else {
         forecastGemDagKosten.push(0);
@@ -148,7 +148,7 @@ function main() {
         forecastGemDagKosten.push(0);
       }
     case maandString:
-      if (maandString == 'Okt') {
+      if (maandString == 'Oct') {
         forecastGemDagKosten.push(Math.round(kostenDezeMaandTmGister / dagInteger));
       } else {
         forecastGemDagKosten.push(0);
@@ -188,7 +188,7 @@ function main() {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
-      if (maandString == 'Maa') {
+      if (maandString == 'Mar') {
         forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[2] - kostenLinearTwee[2] - kostenVandaag) / (dagenMrt - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
@@ -229,7 +229,7 @@ function main() {
         forecastGemiddeldDagbudget.push(0);
       }
     case maandString:
-      if (maandString == 'Okt') {
+      if (maandString == 'Oct') {
         forecastGemiddeldDagbudget.push(Math.round((budgetLinearTwee[9] - kostenLinearTwee[9] - kostenVandaag) / (dagenOkt - dagInteger)));
       } else {
         forecastGemiddeldDagbudget.push(0);
@@ -266,7 +266,7 @@ function main() {
         spendPercentage.push(0);
       }
     case maandString:
-      if (maandString == 'Maa') {
+      if (maandString == 'Mar') {
         spendPercentage.push((kostenLinearTwee[2] - kostenVandaag) / budgetLinearTwee[2]);
       } else {
         spendPercentage.push(0);
@@ -308,7 +308,7 @@ function main() {
         spendPercentage.push(0);
       }
     case maandString:
-      if (maandString == 'Okt') {
+      if (maandString == 'Oct') {
         spendPercentage.push((kostenLinearTwee[9] - kostenVandaag) / budgetLinearTwee[9]);
       } else {
         spendPercentage.push(0);
@@ -345,7 +345,7 @@ function main() {
         maandPercentage.push(0);
       }
     case maandString:
-      if (maandString == 'Maa') {
+      if (maandString == 'Mar') {
         maandPercentage.push(dagInteger / dagenMrt);
       } else {
         maandPercentage.push(0);
@@ -387,7 +387,7 @@ function main() {
         maandPercentage.push(0);
       }
     case maandString:
-      if (maandString == 'Okt') {
+      if (maandString == 'Oct') {
         maandPercentage.push(dagInteger / dagenOkt);
       } else {
         maandPercentage.push(0);
