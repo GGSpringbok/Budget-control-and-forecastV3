@@ -1,24 +1,26 @@
 
 
 
-                                                !! LET OP, DIT IS NOG WIP !!
+                                                !! Budget-control-and-forecast ScriptV2 !!
 
-
-Budget-control-and-forecast Script
 
 Met dit script krijg je de kosten en budget te zien van het account op maandbasis. Op basis hiervan wordt berekend of je op schema loopt. 
 Zo niet, krijg je een e-mail gestuurd met een alert hoeveel euro je over je dagbudget dreigt te gaan.
 
+V2 update! 
+- Forecast gebaseerd op kosten (linear) & budget (linear)
+- Mogelijkheid om extra budgetten toe te voegen
+- Grafiek om kosten (linear) & budget (linear) te monitoren
+- Op de eerste dag van de maand doet het script nog niks om foutmeldingen te voorkomen
+
 Hieronder het stappenplan om het script te gebruiken:
 
 1. Maak een kopie van de volgende spreadsheet: https://docs.google.com/spreadsheets/d/1RgI2549E1FlgMDKCnbnI1sSuhkiw3w3S-Jp4--lmMXA/edit#gid=0
-2. Kopieer het script vanuit github: https://github.com/GGSpringbok/Budget-control-and-forecastV1/blob/main/Script
+2. Kopieer het script vanuit github: https://github.com/GGSpringbok/Budget-control-and-forecast/blob/main/Script
 3. Plaats het script in Google Ads
 4. Pas een aantal variabelen aan naar het spreadsheet
 	a. SpreadsheetURL - De Url van het spreadsheet
 	b. ss - De naam van het tablad van de sheet
 	c. emailAdress - Het mailadres waar de alert naartoe gestuurd moet worden
-	d. jaar - (Voor nu standaard 2023 - kan gewijzigd worden)
-	e. jaarBudget - Het jaarbudget
-
-
+	d. jaarBudget - Het jaarbudget
+	e. Extra budgetten - Per maand extra budget indien van toepassing
