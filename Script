@@ -1,6 +1,6 @@
 function main() {
  
-  //Budget-control-and-forecast
+  //Budget-control-and-forecastV2
  
   // Connecten met spreadsheet
   const spreadsheetUrl = 'SPREADSHEETURL'; //Vul hier de link van de spreadsheet in
