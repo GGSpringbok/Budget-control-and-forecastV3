@@ -1,11 +1,14 @@
 
 
 
-                                                !! Budget-control-and-forecast ScriptV2 !!
+                                                !! Budget-control-and-forecast ScriptV3 !!
 
 
 Met dit script krijg je de kosten en budget te zien van het account op maandbasis. Op basis hiervan wordt berekend of je op schema loopt. 
 Zo niet, krijg je een e-mail gestuurd met een alert hoeveel euro je over je dagbudget dreigt te gaan.
+
+V3 update!
+- Kosten worden berekend t/m gister
 
 V2 update! 
 - Forecast gebaseerd op kosten (linear) & budget (linear)
