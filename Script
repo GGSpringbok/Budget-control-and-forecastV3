@@ -1,6 +1,6 @@
 function main() {
  
-  //Budget-control-and-forecastV2
+  //Budget-control-and-forecastV3
  
   // Connecten met spreadsheet
   const spreadsheetUrl = 'SPREADSHEETURL'; //Vul hier de link van de spreadsheet in
@@ -37,7 +37,15 @@ function main() {
   let dagInteger = Number(dagString);
   let jaarString = yesterdayString.slice(11, 15);
   let jaar = jaarString;
+  
+    //Kosten deze maand t/m gister
+  let kostenVandaag = AdsApp.currentAccount().getStatsFor('TODAY').getCost();  
+  let kostenDezeMaand = AdsApp.currentAccount().getStatsFor('THIS_MONTH').getCost();  
+  let kostenDezeMaandTmGister = kostenDezeMaand - kostenVandaag;
+  
       
+  //------------------------------------------------------------ maandelijks budget  
+
   //Pakt het budget uit B16
   //let budgetyear = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!B16').getValues();
   let maandBudget = jaarBudget / 12;
@@ -116,27 +124,26 @@ function main() {
     maandBudgetOverzicht[11] = maandBudgetOverzicht[11];
   }      
   
-  Logger.log(maandBudgetOverzicht);
+  //------------------------------------------------------------ maandelijkse kosten  
   
-  //Pakt het jaartal uit B17
+  //Pakt het jaar uit B17
   // let periodeInteger = spreadsheet.getSheetByName('Vattenfall - E-mobility').getRange('Vattenfall - E-mobility!B17').getValues();
-  let jaartal = jaar.toString(); 
   
   // kosten per maand (schrikkeljaar nog niet meegenomen -> 2024 is schrikkeljaar)
-  let kostenjan = AdsApp.currentAccount().getStatsFor(`${jaartal}0101`,`${jaartal}0131`).getCost(); 
-  let kostenfeb = AdsApp.currentAccount().getStatsFor(`${jaartal}0201`,`${jaartal}0228`).getCost(); 
-  let kostenmrt = AdsApp.currentAccount().getStatsFor(`${jaartal}0301`,`${jaartal}0331`).getCost(); 
-  let kostenapr = AdsApp.currentAccount().getStatsFor(`${jaartal}0401`,`${jaartal}0430`).getCost(); 
-  let kostenmei = AdsApp.currentAccount().getStatsFor(`${jaartal}0501`,`${jaartal}0531`).getCost(); 
-  let kostenjun = AdsApp.currentAccount().getStatsFor(`${jaartal}0601`,`${jaartal}0630`).getCost(); 
-  let kostenjul = AdsApp.currentAccount().getStatsFor(`${jaartal}0701`,`${jaartal}0731`).getCost(); 
-  let kostenaug = AdsApp.currentAccount().getStatsFor(`${jaartal}0801`,`${jaartal}0831`).getCost(); 
-  let kostensep = AdsApp.currentAccount().getStatsFor(`${jaartal}0901`,`${jaartal}0930`).getCost(); 
-  let kostenokt = AdsApp.currentAccount().getStatsFor(`${jaartal}1001`,`${jaartal}1031`).getCost(); 
-  let kostennov = AdsApp.currentAccount().getStatsFor(`${jaartal}1101`,`${jaartal}1130`).getCost(); 
-  let kostendec = AdsApp.currentAccount().getStatsFor(`${jaartal}1201`,`${jaartal}1231`).getCost(); 
+  let kostenjan = AdsApp.currentAccount().getStatsFor(`${jaar}0101`,`${jaar}0131`).getCost(); 
+  let kostenfeb = AdsApp.currentAccount().getStatsFor(`${jaar}0201`,`${jaar}0228`).getCost(); 
+  let kostenmrt = AdsApp.currentAccount().getStatsFor(`${jaar}0301`,`${jaar}0331`).getCost(); 
+  let kostenapr = AdsApp.currentAccount().getStatsFor(`${jaar}0401`,`${jaar}0430`).getCost(); 
+  let kostenmei = AdsApp.currentAccount().getStatsFor(`${jaar}0501`,`${jaar}0531`).getCost(); 
+  let kostenjun = AdsApp.currentAccount().getStatsFor(`${jaar}0601`,`${jaar}0630`).getCost(); 
+  let kostenjul = AdsApp.currentAccount().getStatsFor(`${jaar}0701`,`${jaar}0731`).getCost(); 
+  let kostenaug = AdsApp.currentAccount().getStatsFor(`${jaar}0801`,`${jaar}0831`).getCost(); 
+  let kostensep = AdsApp.currentAccount().getStatsFor(`${jaar}0901`,`${jaar}0930`).getCost(); 
+  let kostenokt = AdsApp.currentAccount().getStatsFor(`${jaar}1001`,`${jaar}1031`).getCost(); 
+  let kostennov = AdsApp.currentAccount().getStatsFor(`${jaar}1101`,`${jaar}1130`).getCost(); 
+  let kostendec = AdsApp.currentAccount().getStatsFor(`${jaar}1201`,`${jaar}1231`).getCost(); 
   
-  let monthsCost = [kostenjan, kostenfeb, kostenmrt, kostenapr, kostenmei, kostenjun, kostenjul, kostenaug, kostensep, kostenokt, kostennov, kostendec];
+  let monthsCost = [];
  
   let dagenJan = 31;
   let dagenFeb = 28;
@@ -151,7 +158,83 @@ function main() {
   let dagenNov = 30;
   let dagenDec = 31;
   
-  //Berekent het lineare budget
+  //Checkt welke maand het is en stuurt naar array
+  switch (maandString) {
+    case maandString:
+      if (maandString == 'Jan' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenjan);
+      }
+    case maandString:
+      if (maandString == 'Feb' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenfeb);
+      }
+    case maandString:
+      if (maandString == 'Mar' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenmrt);
+      }      
+    case maandString:
+      if (maandString == 'Apr' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenapr);
+      }
+    case maandString:
+      if (maandString == 'May' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenmei);
+      }      
+    case maandString:
+      if (maandString == 'Jun' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenjun);
+      }
+    case maandString:
+      if (maandString == 'Jul' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenjul);
+      }
+    case maandString:
+      if (maandString == 'Aug' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenaug);
+      }
+    case maandString:
+      if (maandString == 'Sep' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostensep);
+      }
+    case maandString:
+      if (maandString == 'Oct' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostenokt);
+      }
+    case maandString:
+      if (maandString == 'Nov' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostennov);
+      }
+    default:
+      if (maandString == 'Dec' && dagInteger != 1) {
+        monthsCost.push(kostenDezeMaandTmGister);
+      } else {
+        monthsCost.push(kostendec);
+      }
+  }
+  
+  //------------------------------------------------------------ Berekent het lineare budget
   let budgetLinearTwee = [];
   for (var i = 0; i < 12; i++) {
     for (var j = 0; j <= i; j++) {
@@ -161,7 +244,7 @@ function main() {
   
   let kostenLinear = 0;
  
-  //Berekent de lineare kosten
+  //------------------------------------------------------------ Berekent de lineare kosten
   let kostenLinearTwee = [];
   for (var i = 0; i < 12; i++) {
     for (var j = 0; j <= i; j++) {
@@ -172,10 +255,7 @@ function main() {
   //------------------------------------------------------------ forecast gemiddeld dagbudget
    
   //Kosten deze maand t/m gister
-  let kostenVandaag = AdsApp.currentAccount().getStatsFor('TODAY').getCost();  
-  let kostenDezeMaand = AdsApp.currentAccount().getStatsFor('THIS_MONTH').getCost();  
-  let kostenDezeMaandTmGister = kostenDezeMaand - kostenVandaag;
-  
+
   let forecastGemDagKosten = [];
   
   //Checkt welke maand het is en stuurt naar array
@@ -341,73 +421,73 @@ function main() {
   switch (maandString) {
     case maandString:
       if (maandString == 'Jan') {
-        spendPercentage.push((kostenLinearTwee[0] - kostenVandaag) / budgetLinearTwee[0]);
+        spendPercentage.push((kostenjan - kostenVandaag) / maandBudgetOverzicht[0]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Feb') {
-        spendPercentage.push((kostenLinearTwee[1] - kostenVandaag) / budgetLinearTwee[1]);
+        spendPercentage.push((kostenfeb - kostenVandaag) / maandBudgetOverzicht[1]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Mar') {
-        spendPercentage.push((kostenLinearTwee[2] - kostenVandaag) / budgetLinearTwee[2]);
+        spendPercentage.push((kostenmrt - kostenVandaag) / maandBudgetOverzicht[2]);
       } else {
         spendPercentage.push(0);
       }      
     case maandString:
       if (maandString == 'Apr') {
-        spendPercentage.push((kostenLinearTwee[3] - kostenVandaag) / budgetLinearTwee[3]);
+        spendPercentage.push((kostenapr - kostenVandaag) / maandBudgetOverzicht[3]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'May') {
-        spendPercentage.push((kostenLinearTwee[4] - kostenVandaag) / budgetLinearTwee[4]);
+        spendPercentage.push((kostenmei - kostenVandaag) / maandBudgetOverzicht[4]);
       } else {
         spendPercentage.push(0);
       }      
     case maandString:
       if (maandString == 'Jun') {
-        spendPercentage.push((kostenLinearTwee[5] - kostenVandaag) / budgetLinearTwee[5]);
+        spendPercentage.push((kostenjun - kostenVandaag) / maandBudgetOverzicht[5]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Jul') {
-        spendPercentage.push((kostenLinearTwee[6] - kostenVandaag) / budgetLinearTwee[6]);
+        spendPercentage.push((kostenjul - kostenVandaag) / maandBudgetOverzicht[6]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Aug') {
-        spendPercentage.push((kostenLinearTwee[7] - kostenVandaag) / budgetLinearTwee[7]);
+        spendPercentage.push((kostenaug - kostenVandaag) / maandBudgetOverzicht[7]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Sep') {
-        spendPercentage.push((kostenLinearTwee[8] - kostenVandaag) / budgetLinearTwee[8]);
+        spendPercentage.push((kostensep - kostenVandaag) / maandBudgetOverzicht[8]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Oct') {
-        spendPercentage.push((kostenLinearTwee[9] - kostenVandaag) / budgetLinearTwee[9]);
+        spendPercentage.push((kostenokt - kostenVandaag) / maandBudgetOverzicht[9]);
       } else {
         spendPercentage.push(0);
       }
     case maandString:
       if (maandString == 'Nov') {
-        spendPercentage.push((kostenLinearTwee[10] - kostenVandaag) / budgetLinearTwee[10]);
+        spendPercentage.push((kostennov - kostenVandaag) / maandBudgetOverzicht[10]);
       } else {
         spendPercentage.push(0);
       }
     default:
       if (maandString == 'Dec') {
-        spendPercentage.push((kostenLinearTwee[11] - kostenVandaag) / budgetLinearTwee[11]);
+        spendPercentage.push((kostendec - kostenVandaag) / maandBudgetOverzicht[11]);
       } else {
         spendPercentage.push(0);
       }
