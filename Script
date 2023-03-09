@@ -30,7 +30,7 @@ function main() {
   let sheetarray = [['Budget', 'Kosten', 'Budget (linear)', 'Kosten (linear)', 'Forecast daily spend', 'Resterend dagbudget', '% spend', '% maand']];
 
   //gisteren ophalen
-  var yesterday = new Date(Date.now() - 86400000);
+  var yesterday = new Date(Date.now() - 66000000);
   let yesterdayString = yesterday.toString();
   let maandString = yesterdayString.slice(4, 7);
   let dagString = yesterdayString.slice(8, 10);
